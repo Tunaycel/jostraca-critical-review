@@ -1,0 +1,7 @@
+node_modules/
+out/
+scratch/
+*.tgz
+.env
+.env.*
+!.env.example

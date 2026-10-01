@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "project": "jostraca",
+  "packageVersion": null,
+  "sourceCommit": null,
+  "experimentsRun": false,
+  "claims": [],
+  "claimFields": ["id", "statement", "sourceUrl", "sourceCommit", "packageVersion", "experiment", "expected", "observed", "status", "limitations"],
+  "allowedStatuses": ["unverified", "documented", "observed", "contradicted"]
+}
