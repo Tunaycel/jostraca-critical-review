@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-10-02T11:29:00.527Z",
+  "checkedAt": "2026-10-02T11:32:39.719Z",
   "status": "passed",
   "packageVersion": "0.39.0",
   "environment": {
@@ -14,11 +14,11 @@
       "status": "passed",
       "before": {
         "sha256": "c5c120b521bbdd6f08ee59a7a7b6ed42c66da105aa1c05dd122d038ec41adaa4",
-        "mtimeMs": 1790940539437.2517
+        "mtimeMs": 1790940759286.6924
       },
       "after": {
         "sha256": "c5c120b521bbdd6f08ee59a7a7b6ed42c66da105aa1c05dd122d038ec41adaa4",
-        "mtimeMs": 1790940539437.2517
+        "mtimeMs": 1790940759286.6924
       },
       "files": {
         "preserved": [],
@@ -67,7 +67,7 @@
     {
       "name": "merge-reports-conflict-and-preserves-unresolved-output",
       "status": "passed",
-      "output": "<<<<<<< GENERATED: 2026-10-02T11:29:00.098Z/merge\nPORT=9090\n=======\nPORT=7070\n>>>>>>> EXISTING: 2026-10-02T11:29:00.089Z/merge\nHOST=localhost\n",
+      "output": "<<<<<<< GENERATED: 2026-10-02T11:32:39.498Z/merge\nPORT=9090\n=======\nPORT=7070\n>>>>>>> EXISTING: 2026-10-02T11:32:39.491Z/merge\nHOST=localhost\n",
       "generateResolvedDespiteConflict": true,
       "files": {
         "preserved": [],

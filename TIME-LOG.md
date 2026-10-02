@@ -16,4 +16,6 @@ Total: unknown. No claim of compliance with the 30-minute limit is made.
 
 2026-10-02: seven regeneration scenarios were subsequently implemented, executed and published through branches with Ubuntu/Windows CI. The participant requested an engineering report and repository presentation improvements. Active human review time remains unconfirmed; preparation must count toward the limit.
 
-Contribution record: Tunay directed the scope, publication and change workflow. Codex implemented the experiment runner, executed automated checks and prepared supporting documentation. The article and participant review of its opinions remain pending.
+Contribution record: Tunay directed the scope, publication and change workflow. Codex implemented the experiment runner, executed automated checks and prepared supporting documentation and the article draft. Participant review of the draft's opinions remains pending.
+
+2026-10-02: an eighth scenario demonstrated a domain-invalid range after a conflict-free text merge. The article draft contains approximately 1,040 whitespace-delimited words including code (942 excluding fenced code). Three JavaScript listings were executed in scenario contexts; the JSON listing was compared to the observed output. This automated verification is not a measurement of active human effort.

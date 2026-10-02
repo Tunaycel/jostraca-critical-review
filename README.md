@@ -8,6 +8,8 @@ A technical review of **Jostraca 0.39.0**, focused on what happens when generate
 
 [Engineering report](docs/ENGINEERING-REVIEW.md) · [Claim ledger](evidence/claims.json) · [Recorded results](evidence/experiment-results.json) · [Open findings](https://github.com/Tunaycel/jostraca-critical-review/issues)
 
+Read the [critical article draft](article.md). The participant's final review of its technical opinions is pending.
+
 ## Reproduce
 
 Requires Node.js 24 and npm. Run from the repository root:
@@ -17,7 +19,7 @@ npm ci --ignore-scripts
 npm test
 ```
 
-The runner marks the report `running` before experiments, `failed` on a scenario failure, and `passed` only after all scenarios complete. Assertion failures exit nonzero. An interrupted run remains visibly incomplete; an old successful report cannot masquerade as its result. A passed scenario may reproduce undesirable behavior; it does not certify safety. Each run retains isolated files under ignored `scratch/` directories and refreshes `evidence/experiment-results.json`.
+The regeneration runner marks its report `running` before experiments, `failed` on a scenario failure, and `passed` only after all eight scenarios complete. The subsequent article check executes three JavaScript listings in scenario contexts and matches the JSON listing to recorded evidence. Either stage failing makes `npm test` exit nonzero. The JSON report describes regeneration scenarios, not the overall article-check status. A passed scenario may reproduce undesirable behavior; it does not certify safety. Each run retains isolated files under ignored `scratch/` directories and refreshes `evidence/experiment-results.json`.
 
 ## Evidence at a glance
 
@@ -39,12 +41,13 @@ The original seven scenarios passed on Ubuntu/Windows in [PR #1](https://github.
 | File | Purpose |
 |---|---|
 | [examples/regeneration.mjs](examples/regeneration.mjs) | Executable reproductions and assertions |
+| [examples/verify-article.mjs](examples/verify-article.mjs) | Executes the article's three JavaScript blocks in scenario contexts and matches its JSON to recorded evidence |
 | [evidence/claims.json](evidence/claims.json) | Eight claims mapped to scenarios |
 | [evidence/experiment-results.json](evidence/experiment-results.json) | Outputs, hashes, timestamps and file classifications |
 | [docs/ENGINEERING-REVIEW.md](docs/ENGINEERING-REVIEW.md) | Method, interpretation, risks and recommendations |
 | [TIME-LOG.md](TIME-LOG.md) | Human effort and contribution record |
 
-The approximately 1,000-word article is pending. This repository supports the review; it is not an upstream Jostraca fork or a completed submission.
+An approximately 1,000-word article draft is available for final participant review. This repository supports the review; it is not an upstream Jostraca fork or a completed submission.
 
 ## Version and scope
 
