@@ -11,6 +11,19 @@ Supporting workspace for the second Voxgig mini task: an approximately 1,000-wor
 
 The task permits submission as Markdown and does not require a public repository. This workspace has not been published. No experiment or performance result is claimed at setup.
 
+## Run the experiments
+
+Requires Node.js 24. Dependencies are pinned in the lockfile.
+
+```sh
+npm ci --ignore-scripts
+npm test
+```
+
+Seven small scenarios have been reproduced on Windows with Node 24.12.0 and Jostraca 0.39.0. Results are written to `evidence/experiment-results.json`; isolated output is retained under ignored `scratch/` directories. Paths in the report are relative to each run. A passing assertion can reproduce a risky behavior; it does not certify that behavior as safe.
+
+The npm registry identifies the release's `gitHead` as `de40adf895c670eb28b62b3c65c6bcb15f080992`. The separately observed repository HEAD was `3152882e61197633b299444d8166eda292fdccb4`; release behavior must not be attributed indiscriminately to that newer HEAD.
+
 ## Verification plan
 
 Use a pinned package version and record its relationship to the inspected source commit. Check first generation, identical-input regeneration, preservation of independent local edits, conflicting edits, and the interaction of `present` and `write`. Record output hashes and file outcomes. Verify the role of saved generation state before drawing conclusions about it.
