@@ -10,6 +10,12 @@ A technical review of **Jostraca 0.39.0**, focused on what happens when generate
 
 Read the [critical article draft](article.md). The participant's final review of its technical opinions is pending.
 
+## Verification architecture
+
+[![Verification pipeline: eight reproduced scenarios, two CI platforms, four article block checks, and a conflict-free merge producing an invalid range.](docs/assets/verification-overview.png)](docs/ENGINEERING-REVIEW.md)
+
+Evidence snapshot dated 2 October 2026. Counts describe the checked fixtures and article blocks, not overall safety or test coverage. The workflow badge above shows the current CI state; the image is a static overview. [Inspect the measurements](evidence/experiment-results.json).
+
 ## Reproduce
 
 Requires Node.js 24 and npm. Run from the repository root:
