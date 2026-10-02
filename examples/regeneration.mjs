@@ -23,8 +23,33 @@ function setup(name, options = {}) {
 }
 
 async function observe(name, test) {
-  results.push({ name, status: 'passed', ...(await test()) })
+  try {
+    results.push({ name, status: 'passed', ...(await test()) })
+  } catch (error) {
+    results.push({ name, status: 'failed', error: error.message })
+    writeReport('failed')
+    throw error
+  }
 }
+
+function writeReport(status) {
+  const report = {
+    checkedAt: new Date().toISOString(),
+    status,
+    packageVersion: '0.39.0',
+    environment: { node: process.version, platform: process.platform, arch: process.arch },
+    scope: 'Seven small single-file scenarios; no performance benchmark or exhaustive safety claim.',
+    results
+  }
+  const portableReport = JSON.stringify(report, null, 2)
+    .split(workspace.replaceAll('\\', '/') + '/').join('')
+  writeFileSync(join(root, 'evidence', 'experiment-results.json'), portableReport + '\n')
+  return portableReport
+}
+
+// Invalidate a previous successful result before starting a new run.
+// An interrupted run remains visibly incomplete instead of appearing passed.
+writeReport('running')
 
 await observe('identical-input-regeneration', async () => {
   const x = setup('identical')
@@ -108,15 +133,4 @@ await observe('merge-without-saved-baseline', async () => {
   return { output, localEditPreserved: output.includes('DEBUG=1'), files: result.files }
 })
 
-const report = {
-  checkedAt: new Date().toISOString(),
-  packageVersion: '0.39.0',
-  environment: { node: process.version, platform: process.platform, arch: process.arch },
-  scope: 'Seven small single-file scenarios; no performance benchmark or exhaustive safety claim.',
-  results
-}
-// Evidence uses paths relative to this run; avoid publishing local machine paths.
-const portableReport = JSON.stringify(report, null, 2)
-  .split(workspace.replaceAll('\\', '/') + '/').join('')
-writeFileSync(join(root, 'evidence', 'experiment-results.json'), portableReport + '\n')
-console.log(portableReport)
+console.log(writeReport('passed'))
