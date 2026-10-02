@@ -13,7 +13,8 @@
     { "id": "C4", "statement": "Overlapping changes produced conflict markers and a conflicted-file entry without rejecting generate(); another run retained unresolved output.", "experiment": "merge-reports-conflict-and-preserves-unresolved-output", "status": "observed" },
     { "id": "C5", "statement": "present:true alone overwrote the edited file and produced no proposed-output sidecar.", "experiment": "present-alone-still-overwrites", "status": "observed" },
     { "id": "C6", "statement": "present:true with write:false retained the edited file and wrote the proposed output to config.new.sh.", "experiment": "present-with-write-false-keeps-original", "status": "observed" },
-    { "id": "C7", "statement": "Moving the entire .jostraca history out of its lookup path led merge:true/write:true to overwrite the edited file without a conflict entry.", "experiment": "merge-without-saved-baseline", "status": "observed" }
+    { "id": "C7", "statement": "Moving the entire .jostraca history out of its lookup path led merge:true/write:true to overwrite the edited file without a conflict entry.", "experiment": "merge-without-saved-baseline", "status": "observed" },
+    { "id": "C8", "statement": "Independently valid range edits merged without textual conflicts into parseable JSON violating minimum <= maximum.", "experiment": "clean-text-merge-can-violate-domain-invariant", "status": "observed" }
   ],
   "sharedEvidence": {
     "experiment": "examples/regeneration.mjs",
