@@ -1,37 +1,54 @@
-# Jostraca technical review workspace
+# Jostraca: regeneration under review
 
-Supporting workspace for the second Voxgig mini task: an approximately 1,000-word critical article with executable code examples. Jostraca is the current candidate; the article's conclusions remain subject to verification and participant judgement.
+[![Verify experiments](https://github.com/Tunaycel/jostraca-critical-review/actions/workflows/verify.yml/badge.svg?branch=main)](https://github.com/Tunaycel/jostraca-critical-review/actions/workflows/verify.yml)
 
-## Deliverables
+A technical review of **Jostraca 0.39.0**, focused on what happens when generated files have been edited by hand. Seven executable scenarios connect factual claims to assertions and recorded results.
 
-- `article.md`: the final article, to be created after experiments and review.
-- `examples/`: runnable, version-pinned examples, to be added during verification.
-- `evidence/claims.json`: evidence supporting factual claims and the limits of each observation.
-- `TIME-LOG.md`: participant-estimated human effort, including preparation.
+**Finding:** independent edits survive a three-way merge when generation history is available. Overwrite defaults, the interaction of `present` and `write`, and missing merge ancestry require deliberate handling by the generator author.
 
-The task permits submission as Markdown and does not require a public repository. This supporting workspace is public at [Tunaycel/jostraca-critical-review](https://github.com/Tunaycel/jostraca-critical-review). The article is pending; the repository currently contains executable evidence, not a completed submission.
+[Engineering report](docs/ENGINEERING-REVIEW.md) · [Claim ledger](evidence/claims.json) · [Recorded results](evidence/experiment-results.json) · [Open findings](https://github.com/Tunaycel/jostraca-critical-review/issues)
 
-## Run the experiments
+## Reproduce
 
-Requires Node.js 24. Dependencies are pinned in the lockfile.
+Requires Node.js 24 and npm. Run from the repository root:
 
 ```sh
 npm ci --ignore-scripts
 npm test
 ```
 
-Seven small scenarios have been reproduced locally on Windows with Node 24.12.0 and Jostraca 0.39.0, and passed on Ubuntu and Windows in [PR #1 CI](https://github.com/Tunaycel/jostraca-critical-review/pull/1/checks). Results are written to `evidence/experiment-results.json`; isolated output is retained under ignored `scratch/` directories. Paths in the report are relative to each run. A passing assertion can reproduce a risky behavior; it does not certify that behavior as safe. The committed result records the local Windows run.
+The runner exits nonzero on assertion failure and writes a report only after all scenarios complete. A passed scenario may reproduce undesirable behavior; it does not certify safety. Each run retains isolated files under ignored `scratch/` directories and refreshes `evidence/experiment-results.json`.
 
-The npm registry identifies the release's `gitHead` as `de40adf895c670eb28b62b3c65c6bcb15f080992`. The separately observed repository HEAD was `3152882e61197633b299444d8166eda292fdccb4`; release behavior must not be attributed indiscriminately to that newer HEAD.
+## Evidence at a glance
 
-## Verification plan
+| Check | Observed result | What it establishes |
+|---|---|---|
+| Identical-input rerun | Same SHA-256 and modification time | This example avoids an unnecessary rewrite |
+| Independent edit with merge history | User addition retained; generated port updated | Both independent changes survive |
+| Overlapping edit | One conflicted file; generate resolves | Callers must inspect the conflict result |
+| Rerun over unresolved conflict | Output bytes retained; conflict still reported | Existing markers are not stacked in this example |
+| present:true alone | Local addition lost; no sidecar | Default write takes precedence |
+| write:false, present:true | Original retained; proposed file written separately | Explicit presentation preserves this edited file |
+| Merge history unavailable | Local addition lost; no conflict entry | Requesting merge alone is insufficient |
 
-Use a pinned package version and record its relationship to the inspected source commit. Check first generation, identical-input regeneration, preservation of independent local edits, conflicting edits, and the interaction of `present` and `write`. Record output hashes and file outcomes. Verify the role of saved generation state before drawing conclusions about it.
+The seven scenarios passed locally on Windows with Node 24.12.0 and on Ubuntu/Windows in [PR #1](https://github.com/Tunaycel/jostraca-critical-review/pull/1/checks). The committed JSON records a local Windows execution. These are behavioral checks, not performance benchmarks or exhaustive test coverage.
 
-Treat document descriptions as claims to test. Separate observed behavior from recommendations. Do not interpret text merges as proof that generated programs remain semantically correct. Timing measurements, if included, must identify the environment and repeated-run method.
+## Review map
 
-## Change workflow
+| File | Purpose |
+|---|---|
+| [examples/regeneration.mjs](examples/regeneration.mjs) | Executable reproductions and assertions |
+| [evidence/claims.json](evidence/claims.json) | Seven claims mapped to scenarios |
+| [evidence/experiment-results.json](evidence/experiment-results.json) | Outputs, hashes, timestamps and file classifications |
+| [docs/ENGINEERING-REVIEW.md](docs/ENGINEERING-REVIEW.md) | Method, interpretation, risks and recommendations |
+| [TIME-LOG.md](TIME-LOG.md) | Human effort and contribution record |
 
-The initial commit establishes this workspace. Subsequent changes use focused branches and commits. If published to GitHub, push each branch, open a PR, and merge only after applicable checks pass. Add CI when runnable experiments exist; setup alone does not substantiate a green test claim.
+The approximately 1,000-word article is pending. This repository supports the review; it is not an upstream Jostraca fork or a completed submission.
 
-AI assistance and participant review will be recorded accurately. The participant must approve the article's technical opinions before submission.
+## Version and scope
+
+The lockfile pins the dependencies. npm metadata associates Jostraca 0.39.0 with `de40adf895c670eb28b62b3c65c6bcb15f080992`. The separately inspected repository HEAD was `3152882e61197633b299444d8166eda292fdccb4`; those identities are not interchangeable.
+
+The experiments use one small text file per scenario. They do not establish cross-language parity, semantic correctness of merged code, multi-file atomicity, or throughput. Recommendations are review judgements, distinct from observed behavior.
+
+Changes use focused branches and commits followed by PRs. Ubuntu and Windows verification must pass before merge.
