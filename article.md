@@ -1,5 +1,7 @@
 # Jostraca's merge works. Your generated project still needs a safety policy.
 
+By Hüseyin Tunay Çelik · 2 October 2026
+
 A generated file becomes harder to manage as soon as somebody edits it. A timeout gets tuned, a configuration gains a deployment flag, or a bug gets fixed directly in the output. Regenerating from an updated model now means reconciling two authors. For a team maintaining SDKs, that ownership problem can determine whether generation remains useful after the initial scaffold.
 
 [Jostraca](https://github.com/jostraca/jostraca) offers components for describing output files and several strategies for existing content. Eight small experiments against version 0.39.0 show useful merge behavior alongside defaults that need careful integration. The distinction is practical: keeping edits, detecting conflicts and preserving application rules are separate responsibilities.
