@@ -12,7 +12,7 @@ The surrounding contract requires care: merge depends on saved ancestry, conflic
 
 The package version and dependency graph are pinned in package.json and package-lock.json. npm's gitHead identifies release commit `de40adf895c670eb28b62b3c65c6bcb15f080992`. This is registry provenance, not proof that a fresh source build is byte-identical to the published package.
 
-Each scenario uses a new directory, a new generator instance and one config.sh file. Initial content sets PORT=8080 and HOST=localhost; regeneration changes the port to 9090. Independent edits append DEBUG=1. The conflict case changes the existing port to 7070. The missing-history case renames the entire .jostraca directory to .jostraca.saved, preserving it while removing it from the normal lookup path.
+Each scenario uses a new directory, a new generator instance and one text file. The first seven use config.sh: initial content sets PORT=8080 and HOST=localhost; regeneration changes the port to 9090. Independent edits append DEBUG=1. The conflict case changes the existing port to 7070. The missing-history case renames the entire .jostraca directory to .jostraca.saved, preserving it while removing it from the normal lookup path. The eighth uses range.json to test a domain invariant after a conflict-free merge.
 
 The runner checks exact output, file classifications, SHA-256 and modification time where applicable. The unchanged-file scenario waits 50 ms before the rerun to reduce the chance of an undetected rewrite due to timestamp granularity. This remains an observation on the tested filesystem.
 
@@ -20,7 +20,7 @@ The runner checks exact output, file classifications, SHA-256 and modification t
 
 | Measure | Value | Interpretation |
 |---|---:|---|
-| Scenarios completed | 7 of 7 | Seven scoped observations reproduced; each may contain multiple assertions |
+| Scenarios completed locally | 8 of 8 | Eight scoped observations reproduced; each may contain multiple assertions |
 | Platforms with successful CI | 2 | Ubuntu and Windows |
 | Changed bytes in identical-input output | 0 | Hash and exact initial content retained |
 | Modification-time change in identical-input output | 0 ms | No rewrite observed |
@@ -28,6 +28,8 @@ The runner checks exact output, file classifications, SHA-256 and modification t
 | Conflicted files with missing history | 0 | Overwrite without conflict classification |
 | User additions retained with merge history | 1 | The single DEBUG=1 addition survived |
 | User additions retained without merge history | 0 | The single DEBUG=1 addition was lost |
+| Text conflicts in range merge | 0 | Independent lines merged cleanly |
+| Validity of merged range | false | minimum=80 exceeds maximum=50 despite valid individual inputs |
 
 Counts describe these fixtures. They are not population estimates, code coverage percentages or a safety score. No throughput or comparative speed claim is made.
 
@@ -67,6 +69,8 @@ This guard detects reported conflicts. It does not recover missing ancestry or e
 
 ## Boundaries and judgement
 
-Textual merge success cannot establish that the resulting program compiles or behaves correctly. This review has not measured large-file performance, binary output, concurrent generators, deletion/rename handling, or TypeScript/Go parity. It is not a complete security audit.
+The range experiment starts with minimum=0 and maximum=100. The generator raises minimum to 80; the user lowers maximum to 50. Each branch is independently valid. The merged JSON parses successfully and has no reported conflict, but minimum=80 exceeds maximum=50. This is a demonstrated boundary of text merging, not evidence that Jostraca promises domain validation or that its text merge is defective.
+
+Textual merge success cannot establish that the resulting program compiles or behaves correctly. Application-specific validation must follow generation. This review has not measured large-file performance, binary output, concurrent generators, deletion/rename handling, or TypeScript/Go parity. It is not a complete security audit.
 
 Jostraca is worth evaluating for repeated generation over edited text when file ownership, retained ancestry and conflict handling are explicit. The evidence supports a focused article about that operational contract. The participant's final editorial judgement remains pending.

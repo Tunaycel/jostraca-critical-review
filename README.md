@@ -2,7 +2,7 @@
 
 [![Verify experiments](https://github.com/Tunaycel/jostraca-critical-review/actions/workflows/verify.yml/badge.svg?branch=main)](https://github.com/Tunaycel/jostraca-critical-review/actions/workflows/verify.yml)
 
-A technical review of **Jostraca 0.39.0**, focused on what happens when generated files have been edited by hand. Seven executable scenarios connect factual claims to assertions and recorded results.
+A technical review of **Jostraca 0.39.0**, focused on what happens when generated files have been edited by hand. Eight executable scenarios connect factual claims to assertions and recorded results.
 
 **Finding:** independent edits survive a three-way merge when generation history is available. Overwrite defaults, the interaction of `present` and `write`, and missing merge ancestry require deliberate handling by the generator author.
 
@@ -30,15 +30,16 @@ The runner marks the report `running` before experiments, `failed` on a scenario
 | present:true alone | Local addition lost; no sidecar | Default write takes precedence |
 | write:false, present:true | Original retained; proposed file written separately | Explicit presentation preserves this edited file |
 | Merge history unavailable | Local addition lost; no conflict entry | Requesting merge alone is insufficient |
+| Independent valid range edits | Zero conflicts; merged minimum exceeds maximum | Textual merge does not validate domain invariants |
 
-The seven scenarios passed locally on Windows with Node 24.12.0 and on Ubuntu/Windows in [PR #1](https://github.com/Tunaycel/jostraca-critical-review/pull/1/checks). The committed JSON records a local Windows execution. These are behavioral checks, not performance benchmarks or exhaustive test coverage.
+The original seven scenarios passed on Ubuntu/Windows in [PR #1](https://github.com/Tunaycel/jostraca-critical-review/pull/1/checks). The eighth scenario adds a domain-invariant check; all eight passed locally on Windows with Node 24.12.0. The committed JSON records that local execution. These are behavioral checks, not performance benchmarks or exhaustive test coverage. See the workflow badge for the latest main-branch CI state.
 
 ## Review map
 
 | File | Purpose |
 |---|---|
 | [examples/regeneration.mjs](examples/regeneration.mjs) | Executable reproductions and assertions |
-| [evidence/claims.json](evidence/claims.json) | Seven claims mapped to scenarios |
+| [evidence/claims.json](evidence/claims.json) | Eight claims mapped to scenarios |
 | [evidence/experiment-results.json](evidence/experiment-results.json) | Outputs, hashes, timestamps and file classifications |
 | [docs/ENGINEERING-REVIEW.md](docs/ENGINEERING-REVIEW.md) | Method, interpretation, risks and recommendations |
 | [TIME-LOG.md](TIME-LOG.md) | Human effort and contribution record |

@@ -12,12 +12,12 @@ const hash = (text) => createHash('sha256').update(text).digest('hex')
 const baseline = 'PORT=8080\nHOST=localhost\n'
 const changed = 'PORT=9090\nHOST=localhost\n'
 
-function setup(name, options = {}) {
+function setup(name, options = {}, filename = 'config.sh') {
   const folder = join(workspace, name)
   const generator = Jostraca(options)
-  const file = join(folder, 'config.sh')
+  const file = join(folder, filename)
   const run = (body) => generator.generate({ folder }, () => {
-    Project({}, () => File({ name: 'config.sh' }, () => Content(body)))
+    Project({}, () => File({ name: filename }, () => Content(body)))
   })
   return { folder, file, run, read: () => readFileSync(file, 'utf8') }
 }
@@ -38,7 +38,7 @@ function writeReport(status) {
     status,
     packageVersion: '0.39.0',
     environment: { node: process.version, platform: process.platform, arch: process.arch },
-    scope: 'Seven small single-file scenarios; no performance benchmark or exhaustive safety claim.',
+    scope: 'Eight small single-file scenarios; no performance benchmark or exhaustive safety claim.',
     results
   }
   const portableReport = JSON.stringify(report, null, 2)
@@ -131,6 +131,37 @@ await observe('merge-without-saved-baseline', async () => {
   assert.equal(output, changed)
   assert.equal(result.files.conflicted.length, 0)
   return { output, localEditPreserved: output.includes('DEBUG=1'), files: result.files }
+})
+
+await observe('clean-text-merge-can-violate-domain-invariant', async () => {
+  const x = setup('semantic', { existing: { txt: { write: true, merge: true } } }, 'range.json')
+  const range = (minimum, maximum) => JSON.stringify({ minimum, units: 'percent', maximum }, null, 2) + '\n'
+  const generated = range(80, 100)
+  const local = range(0, 50)
+  const validRange = (text) => {
+    const value = JSON.parse(text)
+    return value.minimum <= value.maximum
+  }
+  assert.equal(validRange(generated), true)
+  assert.equal(validRange(local), true)
+  await x.run(range(0, 100))
+  writeFileSync(x.file, local)
+  const result = await x.run(generated)
+  assert.equal(result.files.conflicted.length, 0)
+  assert.equal(result.files.merged.length, 1)
+  assert.equal(x.read(), range(80, 50))
+  assert.equal(validRange(x.read()), false)
+  return {
+    generatedInput: generated,
+    localInput: local,
+    output: x.read(),
+    generatedInputValid: true,
+    localInputValid: true,
+    outputParsesAsJson: true,
+    outputInvariantValid: false,
+    invariant: 'minimum <= maximum',
+    files: result.files
+  }
 })
 
 console.log(writeReport('passed'))
