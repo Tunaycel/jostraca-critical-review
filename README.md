@@ -17,7 +17,7 @@ npm ci --ignore-scripts
 npm test
 ```
 
-The runner exits nonzero on assertion failure and writes a report only after all scenarios complete. A passed scenario may reproduce undesirable behavior; it does not certify safety. Each run retains isolated files under ignored `scratch/` directories and refreshes `evidence/experiment-results.json`.
+The runner marks the report `running` before experiments, `failed` on a scenario failure, and `passed` only after all scenarios complete. Assertion failures exit nonzero. An interrupted run remains visibly incomplete; an old successful report cannot masquerade as its result. A passed scenario may reproduce undesirable behavior; it does not certify safety. Each run retains isolated files under ignored `scratch/` directories and refreshes `evidence/experiment-results.json`.
 
 ## Evidence at a glance
 

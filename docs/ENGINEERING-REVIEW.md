@@ -20,9 +20,8 @@ The runner checks exact output, file classifications, SHA-256 and modification t
 
 | Measure | Value | Interpretation |
 |---|---:|---|
-| Scenario assertions completed | 7 of 7 | Seven scoped observations reproduced |
+| Scenarios completed | 7 of 7 | Seven scoped observations reproduced; each may contain multiple assertions |
 | Platforms with successful CI | 2 | Ubuntu and Windows |
-| Dependencies requested directly | 1 | Jostraca; peer packages remain in the lockfile |
 | Changed bytes in identical-input output | 0 | Hash and exact initial content retained |
 | Modification-time change in identical-input output | 0 ms | No rewrite observed |
 | Conflicted files with overlapping edits | 1 | Conflict exposed through the result |
